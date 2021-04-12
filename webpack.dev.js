@@ -27,7 +27,7 @@ export default merge(common, {
   ],
   devServer: {
     contentBase: "./src/",
-    writeToDisk: true,
+    writeToDisk: false,
     watchContentBase: true,
     watchOptions: {
       //ignored: [/*"**.js",*/ "**/node_modules"],
