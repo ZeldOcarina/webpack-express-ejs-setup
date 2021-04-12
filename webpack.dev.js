@@ -23,10 +23,10 @@ export default merge(common, {
     new webpack.HotModuleReplacementPlugin({
       // Options...
     }),
-    new LiveReloadPlugin({}),
+    //new LiveReloadPlugin({ ignore: /\.(js|scss)$/ }),
   ],
   devServer: {
-    contentBase: ["./src/", "./views/"],
+    contentBase: "./src/",
     writeToDisk: true,
     watchContentBase: true,
     watchOptions: {
@@ -35,7 +35,7 @@ export default merge(common, {
     inline: true,
     hot: true,
     injectHot: (compilerConfig) => console.log(compilerConfig),
-    liveReload: true,
+    liveReload: false,
     hotOnly: false,
     open: true,
     overlay: true,
