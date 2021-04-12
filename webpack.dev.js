@@ -3,11 +3,13 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+import chokidar from "chokidar";
 import webpack from "webpack";
 import common from "./webpack.common.js";
 import { merge } from "webpack-merge";
 import LiveReloadPlugin from "webpack-livereload-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import debounce from "lodash.debounce";
 
 export default merge(common, {
   mode: "development",
@@ -27,6 +29,15 @@ export default merge(common, {
   ],
   devServer: {
     contentBase: "./src/",
+    before(app, server) {
+      chokidar.watch("./views").on(
+        "all",
+        debounce(function () {
+          console.log("THIS IS HAPPENING!!!!!!");
+          server.sockWrite(server.sockets, "content-changed");
+        })
+      );
+    },
     writeToDisk: false,
     watchContentBase: true,
     watchOptions: {
@@ -34,7 +45,7 @@ export default merge(common, {
     },
     inline: true,
     hot: true,
-    injectHot: (compilerConfig) => console.log(compilerConfig),
+    injectHot: (compilerConfig) => console.log(compilerConfig.name),
     liveReload: false,
     hotOnly: false,
     open: true,
